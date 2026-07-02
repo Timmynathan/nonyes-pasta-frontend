@@ -58,7 +58,7 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 pt-28 pb-10 grid md:grid-cols-2 gap-10">
+    <div className="max-w-4xl mx-auto px-4 pt-40 pb-10 grid md:grid-cols-2 gap-10">
       <div className="aspect-square bg-brand-orange/10 rounded-xl flex items-center justify-center">
         {product.image ? (
           <img src={imgUrl(product.image, { width: 800 })} alt={product.name} className="w-full h-full object-cover rounded-xl" />
