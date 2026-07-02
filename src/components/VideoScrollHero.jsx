@@ -17,6 +17,29 @@ export default function VideoScrollHero() {
     const section = sectionRef.current;
     if (!video || !section) return;
 
+    // Mobile / touch devices can't reliably scrub video.currentTime (iOS Safari
+    // renders a blank frame). On those, just autoplay + loop as a background.
+    const isTouch = window.matchMedia('(hover: none)').matches
+      || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isTouch) {
+      video.loop = true;
+      video.muted = true;
+      const tryPlay = () => video.play().catch(() => {});
+      if (video.readyState >= 2) tryPlay();
+      else video.addEventListener('canplay', tryPlay, { once: true });
+
+      // Still fade the logo out as the user scrolls past the hero
+      const ctx = gsap.context(() => {
+        gsap.set(titleRef.current, { autoAlpha: 1, y: 0 });
+        gsap.to(titleRef.current, {
+          autoAlpha: 0, y: -20, ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top top', end: 'bottom bottom', scrub: 1 },
+        });
+      });
+      return () => ctx.revert();
+    }
+
     const init = () => {
       video.pause();
       video.currentTime = 0;
