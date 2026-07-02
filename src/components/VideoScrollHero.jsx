@@ -117,7 +117,7 @@ export default function VideoScrollHero() {
       />
 
       {/* Hero scroll section */}
-      <section ref={sectionRef} style={{ height: '180vh' }} className="relative">
+      <section ref={sectionRef} style={{ height: '120vh' }} className="relative">
         <div className="sticky top-0 h-screen w-full">
           <div className="absolute inset-0 bg-black/40" />
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">

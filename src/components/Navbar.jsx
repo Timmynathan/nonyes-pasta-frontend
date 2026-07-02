@@ -24,7 +24,7 @@ export default function Navbar() {
   useEffect(() => {
     if (!isHome) return;
     const onScroll = () => {
-      setVisible(window.scrollY > window.innerHeight * 1.8);
+      setVisible(window.scrollY > window.innerHeight * 1.1);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
