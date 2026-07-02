@@ -25,9 +25,15 @@ export default function VideoScrollHero() {
     if (isTouch) {
       video.loop = true;
       video.muted = true;
+      video.defaultMuted = true;
+      video.setAttribute('muted', '');
       const tryPlay = () => video.play().catch(() => {});
       if (video.readyState >= 2) tryPlay();
       else video.addEventListener('canplay', tryPlay, { once: true });
+
+      // iOS often only allows playback after a real user gesture — retry on first touch
+      const onFirstTouch = () => { tryPlay(); window.removeEventListener('touchstart', onFirstTouch); };
+      window.addEventListener('touchstart', onFirstTouch, { once: true, passive: true });
 
       // Still fade the logo out as the user scrolls past the hero
       const ctx = gsap.context(() => {
@@ -102,8 +108,10 @@ export default function VideoScrollHero() {
       <video
         ref={videoRef}
         src="/hero-video.mp4"
+        poster="/hero-poster.jpg"
         muted
         playsInline
+        autoPlay
         preload="auto"
         className="fixed inset-0 w-full h-full object-cover -z-10"
       />
