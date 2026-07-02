@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { imgUrl } from '../utils/imageUrl';
 
 export default function ProductCard({ product }) {
   const { addItem } = useCart();
@@ -28,7 +29,7 @@ export default function ProductCard({ product }) {
     >
       <div className="aspect-square bg-brand-orange/10 flex items-center justify-center">
         {product.image ? (
-          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+          <img src={imgUrl(product.image, { width: 400 })} alt={product.name} className="w-full h-full object-cover" loading="lazy" />
         ) : (
           <span className="text-4xl">🍝</span>
         )}

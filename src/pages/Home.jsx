@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import api from '../api/client';
 import ProductCard from '../components/ProductCard';
 import VideoScrollHero from '../components/VideoScrollHero';
+import { imgUrl } from '../utils/imageUrl';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -184,7 +185,7 @@ export default function Home() {
           <div className="relative hidden md:block">
             {allProducts.find(p => p.slug === 'nonyes-shrimp-alfredo-fettuccine-pasta')?.image && (
               <img
-                src={allProducts.find(p => p.slug === 'nonyes-shrimp-alfredo-fettuccine-pasta').image}
+                src={imgUrl(allProducts.find(p => p.slug === 'nonyes-shrimp-alfredo-fettuccine-pasta').image, { width: 900 })}
                 alt="Nonye's Pasta"
                 className="absolute inset-0 w-full h-full object-cover"
               />

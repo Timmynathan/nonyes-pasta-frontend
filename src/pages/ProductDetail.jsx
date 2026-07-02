@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/client';
+import { imgUrl } from '../utils/imageUrl';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -60,7 +61,7 @@ export default function ProductDetail() {
     <div className="max-w-4xl mx-auto px-4 pt-28 pb-10 grid md:grid-cols-2 gap-10">
       <div className="aspect-square bg-brand-orange/10 rounded-xl flex items-center justify-center">
         {product.image ? (
-          <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-xl" />
+          <img src={imgUrl(product.image, { width: 800 })} alt={product.name} className="w-full h-full object-cover rounded-xl" />
         ) : (
           <span className="text-6xl">🍝</span>
         )}
