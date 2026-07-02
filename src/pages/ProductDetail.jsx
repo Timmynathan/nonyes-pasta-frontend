@@ -57,7 +57,7 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-10">
+    <div className="max-w-4xl mx-auto px-4 pt-28 pb-10 grid md:grid-cols-2 gap-10">
       <div className="aspect-square bg-brand-orange/10 rounded-xl flex items-center justify-center">
         {product.image ? (
           <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-xl" />
@@ -91,25 +91,24 @@ export default function ProductDetail() {
 
         {/* Spice level */}
         <div className="mb-4">
-          <p className="font-semibold mb-2">Spice Level</p>
-          <div className="flex gap-2">
-            {[
-              { value: 'mild',  label: '🌶 Mild Spicy' },
-              { value: 'extra', label: '🌶🌶 Extra Spicy' },
-            ].map((opt) => (
-              <button
-                key={opt.value}
-                onClick={() => setSpiceLevel(opt.value)}
-                className={`px-4 py-1.5 rounded-full border text-sm font-medium transition ${
-                  spiceLevel === opt.value
-                    ? 'bg-brand-red text-white border-brand-red'
-                    : 'border-brand-dark/30 hover:border-brand-red'
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
+          <p className="text-brand-red font-black text-xs uppercase tracking-widest mb-3">Spice Level</p>
+          <button
+            onClick={() => setSpiceLevel((s) => s === 'extra' ? 'mild' : 'extra')}
+            className="flex items-center gap-3 group"
+          >
+            <span className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition ${
+              spiceLevel === 'extra'
+                ? 'border-brand-red bg-brand-red'
+                : 'border-brand-dark/30 bg-white group-hover:border-brand-red'
+            }`}>
+              {spiceLevel === 'extra' && (
+                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </span>
+            <span className="font-bold text-brand-dark text-sm">Make It Spicy</span>
+          </button>
         </div>
 
         <div className="flex items-center gap-3 mb-6">

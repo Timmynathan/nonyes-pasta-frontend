@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -15,7 +15,14 @@ import Testimonials from './pages/Testimonials';
 import Gallery from './pages/Gallery';
 import OrderTracking from './pages/OrderTracking';
 
+const NO_FOOTER_PATHS = ['/cart', '/checkout', '/login', '/register'];
+
 function App() {
+  const location = useLocation();
+  const hideFooter = NO_FOOTER_PATHS.includes(location.pathname)
+    || location.pathname.startsWith('/product/')
+    || location.pathname.startsWith('/track');
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -35,7 +42,7 @@ function App() {
           <Route path="/track" element={<OrderTracking />} />
         </Routes>
       </main>
-      <Footer />
+      {!hideFooter && <Footer />}
       <WhatsAppButton />
     </div>
   );

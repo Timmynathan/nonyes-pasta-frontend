@@ -182,11 +182,13 @@ export default function Home() {
 
           {/* Right — image */}
           <div className="relative hidden md:block">
-            <img
-              src={`${import.meta.env.VITE_API_BASE_URL?.replace('/api', '')}/media/products/shrimp_alfredo_pasta.png`}
-              alt="Nonye's Pasta"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+            {allProducts.find(p => p.slug === 'nonyes-shrimp-alfredo-fettuccine-pasta')?.image && (
+              <img
+                src={allProducts.find(p => p.slug === 'nonyes-shrimp-alfredo-fettuccine-pasta').image}
+                alt="Nonye's Pasta"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
           </div>
 
         </div>

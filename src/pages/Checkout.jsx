@@ -26,32 +26,27 @@ export default function Checkout() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (items.length === 0) return;
     setLoading(true);
     setError('');
 
     try {
-      const orderPayload = {
+      const res = await api.post('/orders/initiate/', {
+        email: form.email,
         delivery_name: form.delivery_name,
         delivery_phone: form.delivery_phone,
         delivery_address: form.delivery_address,
-        items: items.map((i) => ({
+        cart: items.map((i) => ({
           product_id: i.productId,
           size_id: i.sizeId || null,
           add_on_ids: i.addOnIds || [],
           quantity: i.quantity,
+          spice_level: i.spiceLevel || 'mild',
         })),
-      };
-      const orderRes = await api.post('/orders/', orderPayload);
-      const order = orderRes.data;
-
-      const payRes = await api.post(`/orders/${order.order_number}/pay/`, {
-        email: form.email,
-        callback_url: `${window.location.origin}/track/${order.order_number}`,
       });
 
-      const { authorization_url } = payRes.data.data;
       clearCart();
-      window.location.href = authorization_url;
+      window.location.href = res.data.authorization_url;
     } catch (err) {
       setError(err.response?.data?.detail || 'Something went wrong. Please try again.');
       setLoading(false);
@@ -60,8 +55,17 @@ export default function Checkout() {
 
   const grandTotal = total + DELIVERY_FEE;
 
+  if (items.length === 0) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 pt-28 pb-10 text-center">
+        <p className="text-brand-dark/60 mb-4">Your cart is empty.</p>
+        <button onClick={() => navigate('/')} className="text-brand-red underline">Back to menu</button>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10">
+    <div className="max-w-2xl mx-auto px-4 pt-28 pb-10">
       <h1 className="text-2xl font-bold mb-6">Checkout</h1>
       {error && <p className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -108,10 +112,16 @@ export default function Checkout() {
           />
         </div>
 
-        <div className="bg-brand-cream rounded-xl p-4 space-y-1 text-sm">
-          <div className="flex justify-between"><span>Subtotal</span><span>₦{total.toLocaleString()}</span></div>
+        <div className="bg-brand-cream border border-brand-orange/20 rounded-xl p-4 space-y-1 text-sm">
+          {items.map((i) => (
+            <div key={i.productId} className="flex justify-between text-brand-dark/70">
+              <span>{i.quantity}x {i.name}{i.sizeName ? ` (${i.sizeName})` : ''}</span>
+              <span>₦{(i.unitPrice * i.quantity).toLocaleString()}</span>
+            </div>
+          ))}
+          <div className="flex justify-between border-t pt-2 mt-2"><span>Subtotal</span><span>₦{total.toLocaleString()}</span></div>
           <div className="flex justify-between"><span>Delivery (Lagos)</span><span>₦{DELIVERY_FEE.toLocaleString()}</span></div>
-          <div className="flex justify-between font-bold text-base border-t pt-2 mt-2">
+          <div className="flex justify-between font-bold text-base border-t pt-2 mt-1">
             <span>Total</span><span className="text-brand-red">₦{grandTotal.toLocaleString()}</span>
           </div>
         </div>
@@ -121,7 +131,7 @@ export default function Checkout() {
           disabled={loading}
           className="w-full bg-brand-red text-white font-bold py-3 rounded-full hover:bg-brand-orange transition disabled:opacity-60"
         >
-          {loading ? 'Processing…' : `Pay ₦${grandTotal.toLocaleString()} with Paystack`}
+          {loading ? 'Redirecting to Paystack…' : `Pay ₦${grandTotal.toLocaleString()} with Paystack`}
         </button>
       </form>
     </div>

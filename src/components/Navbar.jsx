@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -17,14 +17,18 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isHome = location.pathname === '/';
 
   useEffect(() => {
+    if (!isHome) return;
     const onScroll = () => {
       setVisible(window.scrollY > window.innerHeight * 1.8);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [isHome]);
 
   function handleAnchor(id, close = false) {
     if (close) setMenuOpen(false);
@@ -68,8 +72,11 @@ export default function Navbar() {
     );
   }
 
+  const showLogo = !isHome || visible;
+  const headerBg = isHome ? '' : 'bg-brand-red';
+
   return (
-    <header className="text-white fixed top-0 left-0 right-0 z-50">
+    <header className={`text-white fixed top-0 left-0 right-0 z-50 ${headerBg}`}>
       <div className="max-w-6xl mx-auto px-4 py-3 min-h-[88px] flex flex-col justify-center">
 
         {/* ── Mobile row ── */}
@@ -84,7 +91,7 @@ export default function Navbar() {
             <span className="block w-6 h-0.5 bg-white rounded" />
           </button>
 
-          {visible && (
+          {showLogo && (
             <Link to="/" className="absolute left-1/2 -translate-x-1/2">
               <img src="/logo.png" alt="Nonye's Pasta" className="h-20 w-auto object-contain" />
             </Link>
@@ -112,7 +119,7 @@ export default function Navbar() {
 
         {/* ── Desktop row ── */}
         <div className="hidden md:flex items-center justify-between">
-          {visible ? (
+          {showLogo ? (
             <Link to="/" className="flex items-center">
               <img src="/logo.png" alt="Nonye's Pasta" className="h-20 w-auto object-contain" />
             </Link>
