@@ -4,7 +4,10 @@ import api from '../api/client';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
-const DELIVERY_FEE = 1500;
+const DELIVERY_ZONES = {
+  island: { label: 'Lagos Island (Lekki, VI, Ikoyi, Ajah)', fee: 3500 },
+  mainland: { label: 'Lagos Mainland (Yaba, Ikeja, Surulere, etc.)', fee: 5000 },
+};
 
 export default function Checkout() {
   const { items, total, clearCart } = useCart();
@@ -17,8 +20,11 @@ export default function Checkout() {
     delivery_address: user?.address || '',
     email: user?.email || '',
   });
+  const [zone, setZone] = useState('island');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const deliveryFee = DELIVERY_ZONES[zone].fee;
 
   function handleChange(e) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -36,6 +42,7 @@ export default function Checkout() {
         delivery_name: form.delivery_name,
         delivery_phone: form.delivery_phone,
         delivery_address: form.delivery_address,
+        delivery_zone: zone,
         cart: items.map((i) => ({
           product_id: i.productId,
           size_id: i.sizeId || null,
@@ -53,7 +60,7 @@ export default function Checkout() {
     }
   }
 
-  const grandTotal = total + DELIVERY_FEE;
+  const grandTotal = total + deliveryFee;
 
   if (items.length === 0) {
     return (
@@ -112,6 +119,32 @@ export default function Checkout() {
           />
         </div>
 
+        <div>
+          <label className="block text-sm font-semibold mb-2">Delivery Zone</label>
+          <div className="space-y-2">
+            {Object.entries(DELIVERY_ZONES).map(([key, z]) => (
+              <label
+                key={key}
+                className={`flex items-center justify-between border rounded-lg px-4 py-3 cursor-pointer transition ${
+                  zone === key ? 'border-brand-red bg-brand-red/5' : 'border-brand-orange/30'
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  <input
+                    type="radio"
+                    name="zone"
+                    checked={zone === key}
+                    onChange={() => setZone(key)}
+                    className="accent-brand-red"
+                  />
+                  <span className="text-sm">{z.label}</span>
+                </span>
+                <span className="text-sm font-semibold whitespace-nowrap">₦{z.fee.toLocaleString()}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
         <div className="bg-brand-cream border border-brand-orange/20 rounded-xl p-4 space-y-1 text-sm">
           {items.map((i) => (
             <div key={i.productId} className="flex justify-between text-brand-dark/70">
@@ -120,7 +153,7 @@ export default function Checkout() {
             </div>
           ))}
           <div className="flex justify-between border-t pt-2 mt-2"><span>Subtotal</span><span>₦{total.toLocaleString()}</span></div>
-          <div className="flex justify-between"><span>Delivery (Lagos)</span><span>₦{DELIVERY_FEE.toLocaleString()}</span></div>
+          <div className="flex justify-between"><span>Delivery ({DELIVERY_ZONES[zone].label.split(' (')[0]})</span><span>₦{deliveryFee.toLocaleString()}</span></div>
           <div className="flex justify-between font-bold text-base border-t pt-2 mt-1">
             <span>Total</span><span className="text-brand-red">₦{grandTotal.toLocaleString()}</span>
           </div>

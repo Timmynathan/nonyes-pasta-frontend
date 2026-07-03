@@ -130,6 +130,12 @@ export default function Navbar() {
             {links.map((l) => renderLink(l))}
           </nav>
           <div className="flex items-center gap-4 text-sm">
+            <Link to="/search" aria-label="Search" className="hover:opacity-80">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <circle cx="11" cy="11" r="7" />
+                <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
+              </svg>
+            </Link>
             {user ? (
               <>
                 <Link to="/account" className="hover:underline">{user.first_name || user.username}</Link>

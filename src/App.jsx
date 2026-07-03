@@ -14,6 +14,7 @@ import FAQ from './pages/FAQ';
 import Testimonials from './pages/Testimonials';
 import Gallery from './pages/Gallery';
 import OrderTracking from './pages/OrderTracking';
+import Search from './pages/Search';
 
 const NO_FOOTER_PATHS = ['/cart', '/checkout', '/login', '/register'];
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/track/:orderNumber" element={<OrderTracking />} />
           <Route path="/track" element={<OrderTracking />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </main>
       {!hideFooter && <Footer />}
