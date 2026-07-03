@@ -174,7 +174,7 @@ export default function Home() {
               About
             </h2>
             <p className="text-white font-bold text-lg md:text-xl uppercase leading-snug mb-6">
-              Welcome to Nonye's Pasta — Lagos's go-to destination for bold, handcrafted pasta made fresh to order. If you're craving rich Alfredo, hearty Lasagna, or a uniquely Nigerian pasta experience, we've got you covered.
+              Welcome to Nonye's Pasta — Lagos' go-to destination for bold, handcrafted pasta made fresh to order. If you're craving rich Alfredo, hearty Lasagna, or a uniquely Nigerian pasta experience, we've got you covered.
             </p>
             <div className="w-24 h-px bg-white/50 mb-6" />
             <p className="text-white/80 text-sm leading-relaxed mb-3">
