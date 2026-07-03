@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import SearchModal from './SearchModal';
 
 // anchor: true means scroll to a section on the home page
 const links = [
@@ -16,6 +17,7 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -98,12 +100,12 @@ export default function Navbar() {
           )}
 
           <div className="flex items-center gap-4">
-            <Link to="/search" aria-label="Search">
+            <button onClick={() => setSearchOpen(true)} aria-label="Search">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <circle cx="11" cy="11" r="7" />
                 <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
               </svg>
-            </Link>
+            </button>
             <Link to="/cart" className="relative" aria-label="Cart">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.4 7h12.8M7 13H5.4M9 21a1 1 0 100-2 1 1 0 000 2zm10 0a1 1 0 100-2 1 1 0 000 2z" />
@@ -130,12 +132,12 @@ export default function Navbar() {
             {links.map((l) => renderLink(l))}
           </nav>
           <div className="flex items-center gap-4 text-sm">
-            <Link to="/search" aria-label="Search" className="hover:opacity-80">
+            <button onClick={() => setSearchOpen(true)} aria-label="Search" className="hover:opacity-80">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <circle cx="11" cy="11" r="7" />
                 <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
               </svg>
-            </Link>
+            </button>
             {user ? (
               <>
                 <Link to="/account" className="hover:underline">{user.first_name || user.username}</Link>
@@ -174,6 +176,8 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }
