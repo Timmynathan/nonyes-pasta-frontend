@@ -193,9 +193,9 @@ export default function Home() {
 
           {/* Right — image */}
           <div className="relative hidden md:block">
-            {allProducts.find(p => p.slug === 'nonyes-shrimp-alfredo-fettuccine-pasta')?.image && (
+            {allProducts.find(p => p.slug === 'nonyes-stir-fry-pasta')?.image && (
               <img
-                src={imgUrl(allProducts.find(p => p.slug === 'nonyes-shrimp-alfredo-fettuccine-pasta').image, { width: 900 })}
+                src={imgUrl(allProducts.find(p => p.slug === 'nonyes-stir-fry-pasta').image, { width: 900 })}
                 alt="Nonye's Pasta"
                 className="absolute inset-0 w-full h-full object-cover"
               />
