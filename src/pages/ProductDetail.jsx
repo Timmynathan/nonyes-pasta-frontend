@@ -3,20 +3,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/client';
 import { imgUrl } from '../utils/imageUrl';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
 
 export default function ProductDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCart();
-  const { user } = useAuth();
 
   const [product, setProduct] = useState(null);
   const [sizeId, setSizeId] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [spiceLevel, setSpiceLevel] = useState('mild');
-  const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState('');
 
   function loadProduct() {
     api.get(`/store/products/${slug}/`).then((res) => {
@@ -48,13 +44,6 @@ export default function ProductDetail() {
       spiceLevel,
     });
     navigate('/cart');
-  }
-
-  async function submitReview(e) {
-    e.preventDefault();
-    await api.post('/store/reviews/', { product: product.id, rating, comment });
-    setComment('');
-    loadProduct();
   }
 
   return (
@@ -129,39 +118,6 @@ export default function ProductDetail() {
         >
           Add to Cart (Pre-order)
         </button>
-
-        <div className="mt-10">
-          <h2 className="font-bold mb-3">Reviews</h2>
-          {product.reviews.length === 0 && <p className="text-brand-dark/60 text-sm">No reviews yet.</p>}
-          <ul className="space-y-2 mb-4">
-            {product.reviews.map((r) => (
-              <li key={r.id} className="text-sm border-b pb-2">
-                <span className="font-semibold">{r.username}</span> - ★ {r.rating}
-                <p className="text-brand-dark/70">{r.comment}</p>
-              </li>
-            ))}
-          </ul>
-          {user ? (
-            <form onSubmit={submitReview} className="space-y-2">
-              <select value={rating} onChange={(e) => setRating(Number(e.target.value))} className="border rounded px-2 py-1">
-                {[5, 4, 3, 2, 1].map((n) => (
-                  <option key={n} value={n}>{n} stars</option>
-                ))}
-              </select>
-              <textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                placeholder="Write a review..."
-                className="w-full border rounded px-2 py-1"
-              />
-              <button type="submit" className="bg-brand-dark text-white px-4 py-1.5 rounded text-sm">
-                Submit Review
-              </button>
-            </form>
-          ) : (
-            <p className="text-sm text-brand-dark/60">Log in to leave a review.</p>
-          )}
-        </div>
       </div>
     </div>
   );

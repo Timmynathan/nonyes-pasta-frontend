@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
 import SearchModal from './SearchModal';
 
 // anchor: true means scroll to a section on the home page
@@ -14,7 +13,6 @@ const links = [
 
 export default function Navbar() {
   const { count } = useCart();
-  const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -138,14 +136,6 @@ export default function Navbar() {
                 <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
               </svg>
             </button>
-            {user ? (
-              <>
-                <Link to="/account" className="hover:underline">{user.first_name || user.username}</Link>
-                <button onClick={logout} className="hover:underline">Logout</button>
-              </>
-            ) : (
-              <Link to="/login" className="hover:underline">Login</Link>
-            )}
             <Link to="/cart" className="relative font-semibold">
               Cart
               {count > 0 && (
@@ -162,18 +152,6 @@ export default function Navbar() {
       {menuOpen && (
         <div className="md:hidden bg-brand-red border-t border-white/20 px-4 py-4 flex flex-col gap-4 text-sm font-medium">
           {links.map((l) => renderLink(l, true))}
-          <div className="border-t border-white/20 pt-3">
-            {user ? (
-              <>
-                <Link to="/account" onClick={() => setMenuOpen(false)} className="block mb-2 hover:underline">
-                  {user.first_name || user.username}
-                </Link>
-                <button onClick={() => { logout(); setMenuOpen(false); }} className="hover:underline">Logout</button>
-              </>
-            ) : (
-              <Link to="/login" onClick={() => setMenuOpen(false)} className="hover:underline">Login</Link>
-            )}
-          </div>
         </div>
       )}
 

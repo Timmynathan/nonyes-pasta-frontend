@@ -7,15 +7,12 @@ import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Account from './pages/Account';
 import FAQ from './pages/FAQ';
 import Testimonials from './pages/Testimonials';
 import Gallery from './pages/Gallery';
 import OrderTracking from './pages/OrderTracking';
 
-const NO_FOOTER_PATHS = ['/cart', '/checkout', '/login', '/register'];
+const NO_FOOTER_PATHS = ['/cart', '/checkout'];
 
 function App() {
   const location = useLocation();
@@ -32,9 +29,6 @@ function App() {
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/account" element={<Account />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/gallery" element={<Gallery />} />

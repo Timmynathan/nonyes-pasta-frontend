@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/client';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
 
 const DELIVERY_ZONES = {
   island: { label: 'Lagos Island (Lekki, VI, Ikoyi, Ajah)', fee: 3500 },
@@ -11,14 +10,13 @@ const DELIVERY_ZONES = {
 
 export default function Checkout() {
   const { items, total, clearCart } = useCart();
-  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    delivery_name: user ? `${user.first_name} ${user.last_name}`.trim() : '',
-    delivery_phone: user?.phone || '',
-    delivery_address: user?.address || '',
-    email: user?.email || '',
+    delivery_name: '',
+    delivery_phone: '',
+    delivery_address: '',
+    email: '',
   });
   const [zone, setZone] = useState('island');
   const [loading, setLoading] = useState(false);
