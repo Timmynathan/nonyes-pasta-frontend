@@ -30,10 +30,13 @@ const FEATURED_SLUGS = [
 
 export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
+  const [loadingMenu, setLoadingMenu] = useState(true);
   const pageRef = useRef(null);
 
   useEffect(() => {
-    api.get('/store/products/').then((res) => setAllProducts(res.data));
+    api.get('/store/products/')
+      .then((res) => setAllProducts(res.data))
+      .finally(() => setLoadingMenu(false));
   }, []);
 
   useEffect(() => {
@@ -83,13 +86,20 @@ export default function Home() {
           <h2 className="fade-up text-white text-2xl md:text-3xl font-bold text-center mb-10">
             Fan Favorites
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {featured.map((p) => (
-              <div key={p.id} className="product-card-anim">
-                <ProductCard product={p} />
-              </div>
-            ))}
-          </div>
+          {loadingMenu ? (
+            <div className="flex flex-col items-center gap-3 py-8 text-white/80">
+              <span className="w-8 h-8 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+              <p className="text-sm">Warming up the kitchen… loading the menu.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+              {featured.map((p) => (
+                <div key={p.id} className="product-card-anim">
+                  <ProductCard product={p} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
