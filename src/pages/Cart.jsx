@@ -8,7 +8,7 @@ export default function Cart() {
     return (
       <div className="max-w-3xl mx-auto px-4 pt-28 pb-16 text-center">
         <h1 className="text-2xl font-bold mb-4">Your cart is empty</h1>
-        <Link to="/shop" className="text-brand-red font-semibold hover:underline">
+        <Link to="/" className="text-brand-red font-semibold hover:underline">
           Browse the menu &rarr;
         </Link>
       </div>

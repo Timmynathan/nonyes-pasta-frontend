@@ -43,7 +43,7 @@ export default function Account() {
 
       <h2 className="text-xl font-semibold mb-4">Your Orders</h2>
       {orders.length === 0 && (
-        <p className="text-brand-dark/60">No orders yet. <Link to="/shop" className="text-brand-red underline">Browse the menu</Link></p>
+        <p className="text-brand-dark/60">No orders yet. <Link to="/" className="text-brand-red underline">Browse the menu</Link></p>
       )}
       <div className="space-y-4">
         {orders.map((order) => (
