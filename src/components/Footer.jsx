@@ -29,7 +29,7 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-base mb-3 uppercase tracking-wide">Contact Us</h4>
             <p className="text-white/80 mb-1">📍 Lagos, Nigeria</p>
-            <p className="text-white/80 mb-1">📞 0812 500 6987</p>
+            <p className="text-white/80 mb-1">📞 0812 541 1593</p>
             <a
               href={whatsappUrl}
               target="_blank"
