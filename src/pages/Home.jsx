@@ -24,8 +24,8 @@ const SECTIONS = [
 const FEATURED_SLUGS = [
   'nonyes-penne-alfredo-pasta',
   'nonyes-stir-fry-pasta',
-  'nonyes-nigerian-native-spaghetti',
-  'nonyes-suya-jollof-spag',
+  'nonyes-vodka-rigatoni',
+  'nonyes-shrimp-alfredo-fettuccine-pasta',
 ];
 
 export default function Home() {
