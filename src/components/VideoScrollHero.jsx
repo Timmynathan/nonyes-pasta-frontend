@@ -29,6 +29,12 @@ export default function VideoScrollHero() {
     window.addEventListener('touchstart', onFirstInteract, { once: true, passive: true });
     window.addEventListener('click', onFirstInteract, { once: true });
 
+    // Browsers pause background video when the tab/app is left; resume on return
+    const onVisible = () => { if (!document.hidden) tryPlay(); };
+    document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('focus', tryPlay);
+    window.addEventListener('pageshow', tryPlay);
+
     // Fade the logo out as the user scrolls past the hero
     const ctx = gsap.context(() => {
       gsap.set(titleRef.current, { autoAlpha: 1, y: 0 });
@@ -42,6 +48,9 @@ export default function VideoScrollHero() {
       ctx.revert();
       window.removeEventListener('touchstart', onFirstInteract);
       window.removeEventListener('click', onFirstInteract);
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('focus', tryPlay);
+      window.removeEventListener('pageshow', tryPlay);
     };
   }, []);
 
