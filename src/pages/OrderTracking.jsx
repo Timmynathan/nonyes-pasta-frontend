@@ -17,20 +17,54 @@ export default function OrderTracking() {
   const [orderNumber, setOrderNumber] = useState(routeOrderNumber || '');
   const [order, setOrder] = useState(null);
   const [error, setError] = useState('');
+  const [confirming, setConfirming] = useState(false);
 
   useEffect(() => {
-    if (orderNumber) {
+    if (!orderNumber) return;
+
+    let cancelled = false;
+    let attempts = 0;
+    // The order is created by Paystack's webhook, which can lag a few seconds
+    // behind the redirect. Poll for up to ~40s before giving up.
+    const maxAttempts = 20;
+    setConfirming(true);
+    setError('');
+    setOrder(null);
+
+    const tryFetch = () => {
       api.get(`/orders/${orderNumber}/`)
-        .then((res) => setOrder(res.data))
-        .catch(() => setError('Order not found.'));
-    }
+        .then((res) => {
+          if (cancelled) return;
+          setOrder(res.data);
+          setConfirming(false);
+        })
+        .catch(() => {
+          if (cancelled) return;
+          attempts += 1;
+          if (attempts >= maxAttempts) {
+            setConfirming(false);
+            setError('Order not found. If you were charged, contact us on WhatsApp with your payment reference and we\'ll sort it out.');
+          } else {
+            setTimeout(tryFetch, 2000);
+          }
+        });
+    };
+    tryFetch();
+
+    return () => { cancelled = true; };
   }, [orderNumber]);
 
   const currentStep = order ? STEPS.indexOf(order.status) : -1;
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10">
+    <div className="max-w-2xl mx-auto px-4 pt-28 pb-10">
       <h1 className="text-2xl font-bold mb-6">Track Your Order</h1>
+      {confirming && (
+        <div className="mb-6 flex items-center gap-3 bg-brand-cream border border-brand-orange/30 rounded-xl px-4 py-3">
+          <span className="w-5 h-5 border-2 border-brand-red border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-brand-dark/80">Confirming your payment… this can take a few seconds.</p>
+        </div>
+      )}
       {!routeOrderNumber && (
         <div className="flex gap-2 mb-8">
           <input
