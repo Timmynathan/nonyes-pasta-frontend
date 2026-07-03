@@ -28,6 +28,25 @@ const FEATURED_SLUGS = [
   'nonyes-shrimp-alfredo-fettuccine-pasta',
 ];
 
+// Explicit display order for the menu. Products not listed appear after,
+// in their original order.
+const MENU_ORDER = [
+  'nonyes-penne-alfredo-pasta',
+  'nonyes-stir-fry-pasta',
+  'nonyes-vodka-rigatoni',
+  'nonyes-shrimp-alfredo-fettuccine-pasta',
+  'nonyes-pasta-salad',
+  'nonyes-tomato-shrimp-linguine',
+  'nonyes-nigerian-native-spaghetti',
+  'nonyes-suya-jollof-spag',
+  'nonyes-beef-lasagna',
+];
+
+const orderIndex = (slug) => {
+  const i = MENU_ORDER.indexOf(slug);
+  return i === -1 ? MENU_ORDER.length : i;
+};
+
 export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
   const [loadingMenu, setLoadingMenu] = useState(true);
@@ -66,7 +85,10 @@ export default function Home() {
   }, [allProducts]);
 
   const featured = FEATURED_SLUGS.map((slug) => allProducts.find((p) => p.slug === slug)).filter(Boolean);
-  const getSection = (cats) => allProducts.filter((p) => cats.includes(p.category?.slug));
+  const getSection = (cats) =>
+    allProducts
+      .filter((p) => cats.includes(p.category?.slug))
+      .sort((a, b) => orderIndex(a.slug) - orderIndex(b.slug));
 
   return (
     <div ref={pageRef}>
