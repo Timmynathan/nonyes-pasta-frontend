@@ -1,12 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/client';
 import { useCart } from '../context/CartContext';
-
-const DELIVERY_ZONES = {
-  island: { label: 'Lagos Island (Lekki, VI, Ikoyi, Ajah)', fee: 3500 },
-  mainland: { label: 'Lagos Mainland (Yaba, Ikeja, Surulere, etc.)', fee: 5000 },
-};
 
 export default function Checkout() {
   const { items, total, clearCart } = useCart();
@@ -18,11 +13,16 @@ export default function Checkout() {
     delivery_address: '',
     email: '',
   });
-  const [zone, setZone] = useState('island');
+  const [zones, setZones] = useState([]);
+  const [location, setLocation] = useState(null); // { name, fee }
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const deliveryFee = DELIVERY_ZONES[zone].fee;
+  useEffect(() => {
+    api.get('/orders/delivery-zones/').then((res) => setZones(res.data)).catch(() => {});
+  }, []);
+
+  const deliveryFee = location ? location.fee : 0;
 
   function handleChange(e) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -31,6 +31,10 @@ export default function Checkout() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (items.length === 0) return;
+    if (!location) {
+      setError('Please select a delivery location.');
+      return;
+    }
     setLoading(true);
     setError('');
 
@@ -40,7 +44,7 @@ export default function Checkout() {
         delivery_name: form.delivery_name,
         delivery_phone: form.delivery_phone,
         delivery_address: form.delivery_address,
-        delivery_zone: zone,
+        delivery_zone: location.name,
         cart: items.map((i) => ({
           product_id: i.productId,
           size_id: i.sizeId || null,
@@ -117,30 +121,46 @@ export default function Checkout() {
           />
         </div>
 
+        {/* Delivery location picker */}
         <div>
-          <label className="block text-sm font-semibold mb-2">Delivery Zone</label>
-          <div className="space-y-2">
-            {Object.entries(DELIVERY_ZONES).map(([key, z]) => (
-              <label
-                key={key}
-                className={`flex items-center justify-between border rounded-lg px-4 py-3 cursor-pointer transition ${
-                  zone === key ? 'border-brand-red bg-brand-red/5' : 'border-brand-orange/30'
-                }`}
-              >
-                <span className="flex items-center gap-3">
-                  <input
-                    type="radio"
-                    name="zone"
-                    checked={zone === key}
-                    onChange={() => setZone(key)}
-                    className="accent-brand-red"
-                  />
-                  <span className="text-sm">{z.label}</span>
-                </span>
-                <span className="text-sm font-semibold whitespace-nowrap">₦{z.fee.toLocaleString()}</span>
-              </label>
+          <label className="block text-sm font-semibold mb-2">Delivery Location</label>
+          <div className="border border-brand-orange/30 rounded-xl overflow-hidden max-h-96 overflow-y-auto">
+            {zones.map((zone) => (
+              <div key={zone.group}>
+                <p className="bg-brand-cream px-4 py-2 text-xs font-bold uppercase tracking-wide text-brand-dark/60 sticky top-0">
+                  {zone.group}
+                </p>
+                {zone.locations.map((loc) => {
+                  const selected = location?.name === loc.name;
+                  return (
+                    <label
+                      key={loc.name}
+                      className={`flex items-center justify-between px-4 py-3 cursor-pointer border-t border-brand-orange/10 transition ${
+                        selected ? 'bg-brand-red/5' : 'hover:bg-brand-cream/50'
+                      }`}
+                    >
+                      <span className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          name="location"
+                          checked={selected}
+                          onChange={() => setLocation(loc)}
+                          className="accent-brand-red"
+                        />
+                        <span className="text-sm">{loc.name}</span>
+                      </span>
+                      <span className="text-sm font-semibold whitespace-nowrap">₦{loc.fee.toLocaleString()}</span>
+                    </label>
+                  );
+                })}
+              </div>
             ))}
           </div>
+          {location && (
+            <p className="text-xs text-brand-dark/60 mt-2">
+              Delivering to <span className="font-semibold">{location.name}</span> · ₦{location.fee.toLocaleString()}
+            </p>
+          )}
         </div>
 
         <div className="bg-brand-cream border border-brand-orange/20 rounded-xl p-4 space-y-1 text-sm">
@@ -151,7 +171,10 @@ export default function Checkout() {
             </div>
           ))}
           <div className="flex justify-between border-t pt-2 mt-2"><span>Subtotal</span><span>₦{total.toLocaleString()}</span></div>
-          <div className="flex justify-between"><span>Delivery ({DELIVERY_ZONES[zone].label.split(' (')[0]})</span><span>₦{deliveryFee.toLocaleString()}</span></div>
+          <div className="flex justify-between">
+            <span>Delivery{location ? ` (${location.name})` : ''}</span>
+            <span>{location ? `₦${deliveryFee.toLocaleString()}` : '—'}</span>
+          </div>
           <div className="flex justify-between font-bold text-base border-t pt-2 mt-1">
             <span>Total</span><span className="text-brand-red">₦{grandTotal.toLocaleString()}</span>
           </div>
@@ -159,7 +182,7 @@ export default function Checkout() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !location}
           className="w-full bg-brand-red text-white font-bold py-3 rounded-full hover:bg-brand-orange transition disabled:opacity-60"
         >
           {loading ? 'Redirecting to Paystack…' : `Pay ₦${grandTotal.toLocaleString()} with Paystack`}
