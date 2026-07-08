@@ -31,6 +31,11 @@ export default function ProductDetail() {
   const size = product.sizes.find((s) => s.id === sizeId);
   const unitPrice = size ? Number(size.price) : Number(product.base_price);
 
+  const hasSizes = product.sizes.length > 0;
+  const isDrink = product.category?.slug === 'drinks';
+  const showSpice = !isDrink && !hasSizes;
+  const optionLabel = product.sizes.some((s) => /guacamole/i.test(s.name)) ? 'Guacamole' : 'Size';
+
   function handleAddToCart() {
     addItem({
       productId: product.id,
@@ -60,9 +65,9 @@ export default function ProductDetail() {
         <p className="text-brand-dark/70 mb-4">{product.description}</p>
         <p className="text-2xl font-bold text-brand-red mb-4">₦{unitPrice.toLocaleString()}</p>
 
-        {product.sizes.length > 0 && (
+        {hasSizes && (
           <div className="mb-4">
-            <p className="font-semibold mb-2">Size</p>
+            <p className="font-semibold mb-2">{optionLabel}</p>
             <div className="flex gap-2 flex-wrap">
               {product.sizes.map((s) => (
                 <button
@@ -80,26 +85,28 @@ export default function ProductDetail() {
         )}
 
         {/* Spice level */}
-        <div className="mb-4">
-          <p className="text-brand-red font-black text-xs uppercase tracking-widest mb-3">Spice Level</p>
-          <button
-            onClick={() => setSpiceLevel((s) => s === 'extra' ? 'mild' : 'extra')}
-            className="flex items-center gap-3 group"
-          >
-            <span className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition ${
-              spiceLevel === 'extra'
-                ? 'border-brand-red bg-brand-red'
-                : 'border-brand-dark/30 bg-white group-hover:border-brand-red'
-            }`}>
-              {spiceLevel === 'extra' && (
-                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              )}
-            </span>
-            <span className="font-bold text-brand-dark text-sm">Make It Spicy</span>
-          </button>
-        </div>
+        {showSpice && (
+          <div className="mb-4">
+            <p className="text-brand-red font-black text-xs uppercase tracking-widest mb-3">Spice Level</p>
+            <button
+              onClick={() => setSpiceLevel((s) => s === 'extra' ? 'mild' : 'extra')}
+              className="flex items-center gap-3 group"
+            >
+              <span className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition ${
+                spiceLevel === 'extra'
+                  ? 'border-brand-red bg-brand-red'
+                  : 'border-brand-dark/30 bg-white group-hover:border-brand-red'
+              }`}>
+                {spiceLevel === 'extra' && (
+                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </span>
+              <span className="font-bold text-brand-dark text-sm">Make It Spicy</span>
+            </button>
+          </div>
+        )}
 
         <div className="flex items-center gap-3 mb-6">
           <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="w-8 h-8 border rounded">-</button>
