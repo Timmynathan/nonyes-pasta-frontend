@@ -39,7 +39,7 @@ export default function Checkout() {
     setError('');
 
     try {
-      const res = await api.post('/orders/initiate/', {
+      const res = await api.post('/orders/place/', {
         email: form.email,
         delivery_name: form.delivery_name,
         delivery_phone: form.delivery_phone,
@@ -55,7 +55,7 @@ export default function Checkout() {
       });
 
       clearCart();
-      window.location.href = res.data.authorization_url;
+      navigate(`/track/${res.data.order_number}`);
     } catch (err) {
       setError(err.response?.data?.detail || 'Something went wrong. Please try again.');
       setLoading(false);
@@ -185,7 +185,7 @@ export default function Checkout() {
           disabled={loading || !location}
           className="w-full bg-brand-red text-white font-bold py-3 rounded-full hover:bg-brand-orange transition disabled:opacity-60"
         >
-          {loading ? 'Redirecting to Paystack…' : `Pay ₦${grandTotal.toLocaleString()} with Paystack`}
+          {loading ? 'Placing your order…' : `Place Order · ₦${grandTotal.toLocaleString()}`}
         </button>
       </form>
     </div>
