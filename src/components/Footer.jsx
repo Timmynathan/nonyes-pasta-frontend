@@ -49,7 +49,7 @@ export default function Footer() {
             <h4 className="font-bold text-base mb-3 uppercase tracking-wide">Follow Us</h4>
             <div className="flex flex-col gap-2">
               <a
-                href="https://www.tiktok.com/@nonyes.pasta"
+                href="https://www.tiktok.com/@nonyes.pasta_"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm"
