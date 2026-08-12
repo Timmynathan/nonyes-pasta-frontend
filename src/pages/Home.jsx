@@ -189,10 +189,7 @@ export default function Home() {
 
           {/* Left — text */}
           <div className="flex flex-col justify-center px-8 md:px-16 py-16">
-            <h2
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              className="text-7xl md:text-8xl font-black text-white uppercase tracking-tight leading-none mb-8"
-            >
+            <h2 className="text-7xl md:text-8xl font-semibold text-white uppercase tracking-tight leading-none mb-8">
               About
             </h2>
             <p className="text-white font-bold text-lg md:text-xl uppercase leading-snug mb-6">

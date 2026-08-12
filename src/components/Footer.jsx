@@ -5,12 +5,8 @@ export default function Footer() {
     <footer id="contact" className="bg-brand-red text-white py-16 mt-24">
       <div className="max-w-6xl mx-auto px-4">
 
-        {/* Top: logo + tagline */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12 pb-10 border-b border-white/20">
-          <div>
-            <img src="/logo.png" alt="Nonye's Pasta" className="h-20 w-auto object-contain mb-3" />
-            <p className="text-white/70 italic text-sm">Love at first bite.</p>
-          </div>
+        {/* Top: WhatsApp CTA */}
+        <div className="flex mb-12 pb-10 border-b border-white/20">
           <a
             href={whatsappUrl}
             target="_blank"
@@ -27,23 +23,47 @@ export default function Footer() {
         {/* Contact details */}
         <div className="grid md:grid-cols-3 gap-8 mb-10 text-sm">
           <div>
-            <h4 className="font-bold text-base mb-3 uppercase tracking-wide">Contact Us</h4>
-            <p className="text-white/80 mb-1">📍 Lagos, Nigeria</p>
-            <p className="text-white/80 mb-1">📞 0812 541 1593</p>
+            <h4 className="font-bold text-base mb-4 uppercase tracking-wide">Contact Us</h4>
+            <p className="flex items-center gap-2.5 text-white/80 mb-2.5">
+              <svg className="w-4 h-4 shrink-0 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+              </svg>
+              Lagos, Nigeria
+            </p>
+            <p className="flex items-center gap-2.5 text-white/80 mb-2.5">
+              <svg className="w-4 h-4 shrink-0 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+              </svg>
+              0812 541 1593
+            </p>
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/80 hover:text-white"
+              className="flex items-center gap-2.5 text-white/80 hover:text-white transition-colors"
             >
-              💬 WhatsApp us
+              <svg className="w-4 h-4 shrink-0 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+              </svg>
+              WhatsApp us
             </a>
           </div>
           <div>
-            <h4 className="font-bold text-base mb-3 uppercase tracking-wide">Order Info</h4>
-            <p className="text-white/80 mb-1">📅 Preorders open Thursday for Saturday</p>
-            <p className="text-white/80 mb-1">📅 Preorders open Friday for Sunday</p>
-            <p className="text-white/80 mt-2">All dishes are freshly made to order.</p>
+            <h4 className="font-bold text-base mb-4 uppercase tracking-wide">Order Info</h4>
+            <p className="flex items-start gap-2.5 text-white/80 mb-2.5">
+              <svg className="w-4 h-4 shrink-0 mt-0.5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+              </svg>
+              Preorders open Thursday for Saturday
+            </p>
+            <p className="flex items-start gap-2.5 text-white/80 mb-2.5">
+              <svg className="w-4 h-4 shrink-0 mt-0.5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+              </svg>
+              Preorders open Friday for Sunday
+            </p>
+            <p className="text-white/60 text-sm mt-3">All dishes are freshly made to order.</p>
           </div>
           <div>
             <h4 className="font-bold text-base mb-3 uppercase tracking-wide">Follow Us</h4>

@@ -5,15 +5,45 @@
   --color-brand-orange: #e67e22;
   --color-brand-cream: #fff8f0;
   --color-brand-dark: #2b1a12;
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
 body {
   margin: 0;
   background-color: var(--color-brand-cream);
   color: var(--color-brand-dark);
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-h1, h2, h3, h4 {
-  font-family: 'Playfair Display', Georgia, serif;
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+/* Prices, counters and any tabular figures stay crisp and aligned */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* Accessible, on-brand focus ring everywhere (uses existing accent) */
+:focus-visible {
+  outline: 2px solid var(--color-brand-red);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--color-brand-red);
+  color: #fff;
 }
