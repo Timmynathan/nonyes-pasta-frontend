@@ -149,7 +149,9 @@ export default function Checkout() {
                         />
                         <span className="text-sm">{loc.name}</span>
                       </span>
-                      <span className="text-sm font-semibold whitespace-nowrap">₦{loc.fee.toLocaleString()}</span>
+                      <span className="text-xs md:text-sm font-semibold whitespace-nowrap text-right">
+                        {loc.arrange_privately ? 'Arranged privately' : `₦${loc.fee.toLocaleString()}`}
+                      </span>
                     </label>
                   );
                 })}
@@ -158,7 +160,10 @@ export default function Checkout() {
           </div>
           {location && (
             <p className="text-xs text-brand-dark/60 mt-2">
-              Delivering to <span className="font-semibold">{location.name}</span> · ₦{location.fee.toLocaleString()}
+              Delivering to <span className="font-semibold">{location.name}</span>
+              {location.arrange_privately
+                ? ' · you arrange delivery directly with us'
+                : ` · ₦${location.fee.toLocaleString()}`}
             </p>
           )}
         </div>
@@ -173,7 +178,9 @@ export default function Checkout() {
           <div className="flex justify-between border-t pt-2 mt-2"><span>Subtotal</span><span>₦{total.toLocaleString()}</span></div>
           <div className="flex justify-between">
             <span>Delivery{location ? ` (${location.name})` : ''}</span>
-            <span>{location ? `₦${deliveryFee.toLocaleString()}` : '—'}</span>
+            <span>
+              {!location ? '—' : location.arrange_privately ? 'Arranged privately' : `₦${deliveryFee.toLocaleString()}`}
+            </span>
           </div>
           <div className="flex justify-between font-bold text-base border-t pt-2 mt-1">
             <span>Total</span><span className="text-brand-red">₦{grandTotal.toLocaleString()}</span>

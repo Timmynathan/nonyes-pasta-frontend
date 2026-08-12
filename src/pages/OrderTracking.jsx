@@ -100,7 +100,7 @@ export default function OrderTracking() {
             ))}
             <div className="flex justify-between text-sm py-1 text-brand-dark/60">
               <span>Delivery{order.delivery_area ? ` (${order.delivery_area})` : ''}</span>
-              <span>₦{Number(order.delivery_fee).toLocaleString()}</span>
+              <span>{Number(order.delivery_fee) > 0 ? `₦${Number(order.delivery_fee).toLocaleString()}` : 'Arranged privately'}</span>
             </div>
             <div className="border-t mt-2 pt-2 flex justify-between font-bold text-base">
               <span>Amount to Transfer</span>
@@ -138,6 +138,9 @@ export default function OrderTracking() {
           {/* Delivery + preorder note */}
           <div className="bg-brand-cream border border-brand-orange/30 rounded-xl p-4 mb-6 text-sm text-brand-dark/80 leading-relaxed">
             <p className="mb-1"><span className="font-semibold">Delivering to:</span> {order.delivery_address}</p>
+            {Number(order.delivery_fee) === 0 && (
+              <p className="mb-1">🛵 Delivery to your area is arranged directly with us — we'll sort out the delivery on WhatsApp. The amount above is for your food only.</p>
+            )}
             <p>📅 This is a pre-order — freshly made on your delivery day. We'll confirm timing on WhatsApp once your transfer is received.</p>
           </div>
 
