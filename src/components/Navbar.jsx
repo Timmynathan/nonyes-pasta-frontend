@@ -16,10 +16,19 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [bump, setBump] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const isHome = location.pathname === '/';
+
+  // Bump the cart badge whenever the item count changes
+  useEffect(() => {
+    if (count === 0) return;
+    setBump(true);
+    const t = setTimeout(() => setBump(false), 700);
+    return () => clearTimeout(t);
+  }, [count]);
 
   useEffect(() => {
     if (!isHome) return;
@@ -104,12 +113,12 @@ export default function Navbar() {
                 <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
               </svg>
             </button>
-            <Link to="/cart" className="relative" aria-label="Cart">
+            <Link to="/cart" className={`relative inline-block ${bump ? 'animate-cart' : ''}`} aria-label="Cart">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.4 7h12.8M7 13H5.4M9 21a1 1 0 100-2 1 1 0 000 2zm10 0a1 1 0 100-2 1 1 0 000 2z" />
               </svg>
               {count > 0 && (
-                <span className="absolute -top-2 -right-2 bg-brand-orange text-white text-xs rounded-full w-4 h-4 flex items-center justify-center leading-none">
+                <span className={`absolute -top-2 -right-2 bg-brand-orange text-white text-xs rounded-full w-4 h-4 flex items-center justify-center leading-none ${bump ? 'animate-pop' : ''}`}>
                   {count}
                 </span>
               )}
@@ -136,10 +145,10 @@ export default function Navbar() {
                 <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
               </svg>
             </button>
-            <Link to="/cart" className="relative font-semibold">
+            <Link to="/cart" className={`relative inline-block font-semibold ${bump ? 'animate-cart' : ''}`}>
               Cart
               {count > 0 && (
-                <span className="absolute -top-2 -right-3 bg-brand-orange text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className={`absolute -top-2 -right-3 bg-brand-orange text-white text-xs rounded-full w-5 h-5 flex items-center justify-center ${bump ? 'animate-pop' : ''}`}>
                   {count}
                 </span>
               )}
