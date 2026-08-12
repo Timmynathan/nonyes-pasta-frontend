@@ -39,6 +39,13 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [isHome]);
 
+  function goHome() {
+    setMenuOpen(false);
+    setVisible(false);            // hide the navbar logo so it doesn't clash with the hero logo
+    navigate('/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function handleAnchor(id, close = false) {
     if (close) setMenuOpen(false);
     const el = document.getElementById(id);
@@ -101,7 +108,7 @@ export default function Navbar() {
           </button>
 
           {showLogo && (
-            <Link to="/" className="absolute left-1/2 -translate-x-1/2">
+            <Link to="/" onClick={goHome} className="absolute left-1/2 -translate-x-1/2">
               <img src="/logo.png" alt="Nonye's Pasta" className="h-20 w-auto object-contain" />
             </Link>
           )}
@@ -129,7 +136,7 @@ export default function Navbar() {
         {/* ── Desktop row ── */}
         <div className="hidden md:flex items-center justify-between">
           {showLogo ? (
-            <Link to="/" className="flex items-center">
+            <Link to="/" onClick={goHome} className="flex items-center">
               <img src="/logo.png" alt="Nonye's Pasta" className="h-20 w-auto object-contain" />
             </Link>
           ) : (

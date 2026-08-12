@@ -168,8 +168,12 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-14 fade-up">
-            <p className="text-white/50 text-xs mb-2 uppercase tracking-widest">
-              📅 Preorders open Thursday for Saturday &bull; Friday for Sunday
+            <p className="flex items-center justify-center gap-2 text-white/50 text-xs mb-2 uppercase tracking-widest">
+              <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="5" width="18" height="16" rx="2.5" />
+                <path d="M3 9.5h18M8 3v4M16 3v4" />
+              </svg>
+              Preorders open Thursday for Saturday &bull; Friday for Sunday
             </p>
             <a
               href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Nonye's Pasta! I'd like to enquire about catering services.")}`}

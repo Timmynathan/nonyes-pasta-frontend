@@ -141,7 +141,13 @@ export default function OrderTracking() {
             {Number(order.delivery_fee) === 0 && (
               <p className="mb-1">🛵 Delivery to your area is arranged directly with us — we'll sort out the delivery on WhatsApp. The amount above is for your food only.</p>
             )}
-            <p>📅 This is a pre-order — freshly made on your delivery day. We'll confirm timing on WhatsApp once your transfer is received.</p>
+            <p className="flex items-start gap-2">
+              <svg className="w-4 h-4 shrink-0 mt-0.5 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="5" width="18" height="16" rx="2.5" />
+                <path d="M3 9.5h18M8 3v4M16 3v4" />
+              </svg>
+              <span>This is a pre-order — freshly made on your delivery day. We'll confirm timing on WhatsApp once your transfer is received.</span>
+            </p>
           </div>
 
           {/* WhatsApp CTA */}
